@@ -4,6 +4,7 @@ from selenium.webdriver.firefox.service import Service
 from selenium import webdriver
 
 from constants import *
+from other import *
 
 # Output: ?
 class DoListMonthArticles:
@@ -17,3 +18,8 @@ class DoListMonthArticles:
         )
         drv = webdriver.Firefox(service = service)
         drv.get(FIRST_POST)
+        items = drv.find_elements(By.CSS_SELECTOR, CSS_PICKER)
+        # Use the first date picker, the second one is something wrong.
+        picker = items[0]
+        d = countedDays(picker)
+        print(d)
