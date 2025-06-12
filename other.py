@@ -1,25 +1,5 @@
 from selenium.webdriver.common.by import By
 
-# Find month with most pages based on pages per month (ppm)
-def detectCurrentMonth(ppm):
-    result = None
-    for month in ppm:
-        if result is None:
-            result = month
-        if ppm[month] > ppm[result]:
-            result = month
-    return result
-
-# Find next month following the current one
-def detectNextMonth(ppm, currentMonth):
-    takeIt = False
-    for month in ppm:
-        if takeIt:
-            return month
-        if month == currentMonth:
-            takeIt = True
-    return None
-
 # Returns calendar: Counter -> Date
 def countedDays(picker):
     out = {}
@@ -45,3 +25,23 @@ def countPagesPerMonth(cd):
         else:
             monthCounts[month] = 0
     return monthCounts
+
+# Find month with most pages based on pages per month (ppm)
+def detectCurrentMonth(ppm):
+    result = None
+    for month in ppm:
+        if result is None:
+            result = month
+        if ppm[month] > ppm[result]:
+            result = month
+    return result
+
+# Find next month following the current one
+def detectNextMonth(ppm, currentMonth):
+    takeIt = False
+    for month in ppm:
+        if takeIt:
+            return month
+        if month == currentMonth:
+            takeIt = True
+    return None

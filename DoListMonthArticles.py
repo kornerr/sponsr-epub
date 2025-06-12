@@ -20,6 +20,11 @@ class DoListMonthArticles:
         self.drv.get(FIRST_POST)
         self.printPageMap()
 
+    def goToMonth(self, id):
+        xpath = TEMPLATE_ARTICLE_XPATH.replace("%ARTICLE_ID%", str(id))
+        cell = self.drv.find_element(By.XPATH, xpath)
+        cell.click()
+
     def printPageMap(self):
         print(self.drv.current_url)
         items = self.drv.find_elements(By.CSS_SELECTOR, CSS_PICKER)
@@ -29,6 +34,9 @@ class DoListMonthArticles:
         print(cd)
         ppm = countPagesPerMonth(cd)
         monthNow = detectCurrentMonth(ppm)
-        print(monthNow)
+        print("Now:", monthNow)
         monthNext = detectNextMonth(ppm, monthNow)
-        print(monthNext)
+        print("Next:", monthNext)
+        nextMonthArticleId = list(cd.keys())[-1]
+        print("Next article id:", nextMonthArticleId)
+        self.goToMonth(nextMonthArticleId)
