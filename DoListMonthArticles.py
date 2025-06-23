@@ -2,6 +2,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.service import Service
 from selenium import webdriver
+import time
 
 from constants import *
 from other import *
@@ -18,7 +19,12 @@ class DoListMonthArticles:
         )
         self.drv = webdriver.Firefox(service = self.service)
         self.drv.get(FIRST_POST)
-        self.printPageMap()
+        counter = 0
+        while counter < 3:
+            nextId = self.printPageMap()
+            self.goToMonth(nextId)
+            counter += 1
+            time.sleep(1)
 
     def goToMonth(self, id):
         xpath = TEMPLATE_ARTICLE_XPATH.replace("%ARTICLE_ID%", str(id))
@@ -26,17 +32,19 @@ class DoListMonthArticles:
         cell.click()
 
     def printPageMap(self):
-        print(self.drv.current_url)
+        print("PAGE_URL", self.drv.current_url)
         items = self.drv.find_elements(By.CSS_SELECTOR, CSS_PICKER)
         # Use the first date picker, the second one is broken.
         picker = items[0]
         cd = countedDays(picker)
-        print(cd)
         ppm = countPagesPerMonth(cd)
         monthNow = detectCurrentMonth(ppm)
-        print("Now:", monthNow)
+        print("NOW", monthNow)
         monthNext = detectNextMonth(ppm, monthNow)
-        print("Next:", monthNext)
+        print("NEXT", monthNext)
         nextMonthArticleId = list(cd.keys())[-1]
-        print("Next article id:", nextMonthArticleId)
-        self.goToMonth(nextMonthArticleId)
+        print("NEXT_ARTICLE_ID", nextMonthArticleId)
+        for id in cd:
+            mo = cd[id]
+            print("CAL", id, mo)
+        return nextMonthArticleId
