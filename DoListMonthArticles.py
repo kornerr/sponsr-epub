@@ -20,11 +20,11 @@ class DoListMonthArticles:
         self.drv = webdriver.Firefox(service = self.service)
         self.drv.get(FIRST_POST)
         counter = 0
-        while counter < 3:
+        while counter < 2:
             nextId = self.printPageMap()
             self.goToMonth(nextId)
             counter += 1
-            time.sleep(1)
+            time.sleep(5)
 
     def goToMonth(self, id):
         xpath = TEMPLATE_ARTICLE_XPATH.replace("%ARTICLE_ID%", str(id))
