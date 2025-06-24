@@ -20,22 +20,24 @@ class DoListMonthArticles:
         self.drv = webdriver.Firefox(service = self.service)
         self.drv.get(FIRST_POST)
         counter = 0
-        while counter < 2:
+        while counter < 3:
             nextId = self.printPageMap()
             self.goToMonth(nextId)
             counter += 1
-            time.sleep(5)
+            time.sleep(2)
 
     def goToMonth(self, id):
-        xpath = TEMPLATE_ARTICLE_XPATH.replace("%ARTICLE_ID%", str(id))
-        cell = self.drv.find_element(By.XPATH, xpath)
-        cell.click()
+#        xpath = TEMPLATE_ARTICLE_XPATH.replace("%ARTICLE_ID%", str(id))
+#        cell = self.drv.find_element(By.XPATH, xpath)
+#        cell.click()
+        nextMonth = self.drv.find_element(By.XPATH, XPATH_NEXT_MONTH)
+        nextMonth.click()
 
     def printPageMap(self):
         print("PAGE_URL", self.drv.current_url)
         items = self.drv.find_elements(By.CSS_SELECTOR, CSS_PICKER)
         # Use the first date picker, the second one is broken.
-        picker = items[0]
+        picker = items[1]
         cd = countedDays(picker)
         ppm = countPagesPerMonth(cd)
         monthNow = detectCurrentMonth(ppm)
