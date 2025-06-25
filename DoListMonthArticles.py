@@ -28,6 +28,7 @@ class DoListMonthArticles:
         html = self.drv.page_source
         lines = html.split("\n")
         isDate = False
+        currentDate = None
         for ln in lines:
             # Parse date
             if isDate:
@@ -36,7 +37,8 @@ class DoListMonthArticles:
                 parts = lnt.split(" ")
                 inverseDt = parts[0]
                 dps = inverseDt.split(".")
-                print(f"DATE {dps[2]}-{int(dps[1])}-{int(dps[0])}")
+                currentDate = f"{dps[2]}-{int(dps[1])}-{int(dps[0])}"
+                print("DATE", currentDate)
             # Find date marker
             if ARTICLE_DATE_MARKER in ln:
                 isDate = True
@@ -46,6 +48,18 @@ class DoListMonthArticles:
         picker = items[1]
         cd = countedDays(picker)
         print(cd)
+
+        # Find the next article id
+        for id in cd:
+            dt = cd[id]
+            if dt == currentDate:
+                aid = int(id) + 1
+                print("goto article id:", aid)
+
+                xpath = TEMPLATE_ARTICLE_XPATH.replace("%ARTICLE_ID%", str(aid))
+                cell = self.drv.find_element(By.XPATH, xpath)
+                cell.click()
+                break
 
     def goToMonth(self, id):
 #        xpath = TEMPLATE_ARTICLE_XPATH.replace("%ARTICLE_ID%", str(id))
