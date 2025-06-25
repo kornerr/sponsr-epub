@@ -20,8 +20,10 @@ class DoListMonthArticles:
         self.drv = webdriver.Firefox(service = self.service)
         self.drv.get(FIRST_POST)
         counter = 0
-        while counter < 3:
+        while counter < 1:
             self.printPageMap()
+            break
+            
 
             # Click '>'
             nextMonth = self.drv.find_element(By.XPATH, XPATH_NEXT_MONTH)
