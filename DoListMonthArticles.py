@@ -18,25 +18,34 @@ class DoListMonthArticles:
             service_args = ["--marionette-port", "2828", "--connect-existing"]
         )
         self.drv = webdriver.Firefox(service = self.service)
-        self.drv.get(FIRST_POST)
-        counter = 0
-        while counter < 1:
-            self.printPageMap()
-            break
-            
+        url = FIRST_POST
 
-            # Click '>'
-            nextMonth = self.drv.find_element(By.XPATH, XPATH_NEXT_MONTH)
-            nextMonth.click()
+        # Load the page
+        self.drv.get(url)
+        print("URL", self.drv.current_url)
 
-            # Click somewhere in the middle of the calendar
-            # It should point to the next month now
-            xpath = TEMPLATE_ARTICLE_XPATH.replace("%ARTICLE_ID%", str(15))
-            cell = self.drv.find_element(By.XPATH, xpath)
-            cell.click()
+        # Get its source code
+        html = self.drv.page_source
+        lines = html.split("\n")
+        isDate = False
+        for ln in lines:
+            # Parse date
+            if isDate:
+                isDate = False
+                lnt = ln.strip()
+                parts = lnt.split(" ")
+                inverseDt = parts[0]
+                dps = inverseDt.split(".")
+                print(f"DATE {dps[2]}-{int(dps[1])}-{int(dps[0])}")
+            # Find date marker
+            if ARTICLE_DATE_MARKER in ln:
+                isDate = True
 
-            time.sleep(3)
-            counter += 1
+        items = self.drv.find_elements(By.CSS_SELECTOR, CSS_PICKER)
+        # Use the second date picker, the reason is unclear.
+        picker = items[1]
+        cd = countedDays(picker)
+        print(cd)
 
     def goToMonth(self, id):
 #        xpath = TEMPLATE_ARTICLE_XPATH.replace("%ARTICLE_ID%", str(id))

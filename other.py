@@ -8,7 +8,7 @@ def countedDays(picker):
     for day in days:
         if day.tag_name == "div":
             dt = day.get_attribute("data-date")
-            month = day.get_attribute("data-month")
+            month = int(day.get_attribute("data-month")) + 1
             year = day.get_attribute("data-year")
             counter = counter + 1
             out[counter] = f"{year}-{month}-{dt}"
