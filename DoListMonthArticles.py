@@ -21,10 +21,20 @@ class DoListMonthArticles:
         self.drv.get(FIRST_POST)
         counter = 0
         while counter < 3:
-            nextId = self.printPageMap()
-            self.goToMonth(nextId)
+            self.printPageMap()
+
+            # Click '>'
+            nextMonth = self.drv.find_element(By.XPATH, XPATH_NEXT_MONTH)
+            nextMonth.click()
+
+            # Click somewhere in the middle of the calendar
+            # It should point to the next month now
+            xpath = TEMPLATE_ARTICLE_XPATH.replace("%ARTICLE_ID%", str(15))
+            cell = self.drv.find_element(By.XPATH, xpath)
+            cell.click()
+
+            time.sleep(3)
             counter += 1
-            time.sleep(2)
 
     def goToMonth(self, id):
 #        xpath = TEMPLATE_ARTICLE_XPATH.replace("%ARTICLE_ID%", str(id))
@@ -36,7 +46,7 @@ class DoListMonthArticles:
     def printPageMap(self):
         print("PAGE_URL", self.drv.current_url)
         items = self.drv.find_elements(By.CSS_SELECTOR, CSS_PICKER)
-        # Use the first date picker, the second one is broken.
+        # Use the second date picker, the reason is unclear.
         picker = items[1]
         cd = countedDays(picker)
         ppm = countPagesPerMonth(cd)
@@ -46,7 +56,8 @@ class DoListMonthArticles:
         print("NEXT", monthNext)
         nextMonthArticleId = list(cd.keys())[-1]
         print("NEXT_ARTICLE_ID", nextMonthArticleId)
+        print(cd)
         for id in cd:
             mo = cd[id]
-            print("CAL", id, mo)
+            #print("CAL", id, mo)
         return nextMonthArticleId
