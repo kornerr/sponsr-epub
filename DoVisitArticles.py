@@ -10,6 +10,7 @@ from other import *
 class DoVisitArticles:
     def __init__(self):
         self.drv = None
+        self.nextId = None
 
     def execute(self):
         service = Service(
@@ -18,6 +19,12 @@ class DoVisitArticles:
         )
         self.drv = webdriver.Firefox(service = service)
         self.printPage(FIRST_POST)
+        self.goToNextArticle()
+
+    def goToNextArticle(self):
+        xpath = TEMPLATE_ARTICLE_XPATH.replace("%ARTICLE_ID%", str(self.nextId))
+        cell = self.drv.find_element(By.XPATH, xpath)
+        cell.click()
 
     def printPage(self, url):
         # Load the page
@@ -39,5 +46,4 @@ class DoVisitArticles:
         # Use the second date picker, the reason is unclear.
         picker = items[1]
         cd = countedDays(picker)
-        nextId = nextArticleId(cd, dt)
-        print("NEXT", nextId)
+        self.nextId = nextArticleId(cd, dt)
