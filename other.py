@@ -47,6 +47,14 @@ def detectNextMonth(ppm, currentMonth):
             takeIt = True
     return None
 
+# Find next article id
+def nextArticleId(cd, currentDate):
+    for id in cd:
+        dt = cd[id]
+        if dt == currentDate:
+            return int(id) + 1
+    return None
+
 # Extact page date from HTML source
 def pageDate(html):
     lines = html.split("\n")
