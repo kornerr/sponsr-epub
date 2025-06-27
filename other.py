@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from constants import *
 
 # Returns calendar: Counter -> Date
 def countedDays(picker):
@@ -44,4 +45,24 @@ def detectNextMonth(ppm, currentMonth):
             return month
         if month == currentMonth:
             takeIt = True
+    return None
+
+# Extact page date from HTML source
+def pageDate(html):
+    lines = html.split("\n")
+    isDate = False
+    currentDate = None
+    for ln in lines:
+        # Parse date
+        if isDate:
+            isDate = False
+            lnt = ln.strip()
+            parts = lnt.split(" ")
+            inverseDt = parts[0]
+            dps = inverseDt.split(".")
+            currentDate = f"{dps[2]}-{int(dps[1])}-{int(dps[0])}"
+            return currentDate
+        # Find date marker
+        if ARTICLE_DATE_MARKER in ln:
+            isDate = True
     return None

@@ -1,7 +1,7 @@
-from DoListMonthArticles import *
+from DoVisitArticles import *
 
 tasks = [
-    DoListMonthArticles(),
+    DoVisitArticles(),
 ]
 
 for task in tasks:
