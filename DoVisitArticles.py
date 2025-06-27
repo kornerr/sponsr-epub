@@ -18,17 +18,24 @@ class DoVisitArticles:
             service_args = ["--marionette-port", "2828", "--connect-existing"]
         )
         self.drv = webdriver.Firefox(service = service)
-        self.printPage(FIRST_POST)
+
+        self.printPage(FIRST_POST, True)
         self.goToNextArticle()
+        self.printPage(self.drv.current_url, False)
+        self.goToNextArticle()
+        self.printPage(self.drv.current_url, False)
+        self.goToNextArticle()
+
 
     def goToNextArticle(self):
         xpath = TEMPLATE_ARTICLE_XPATH.replace("%ARTICLE_ID%", str(self.nextId))
         cell = self.drv.find_element(By.XPATH, xpath)
         cell.click()
 
-    def printPage(self, url):
-        # Load the page
-        self.drv.get(url)
+    def printPage(self, url, reload):
+        # Reload the page
+        if reload:
+            self.drv.get(url)
         # Get page source
         html = self.drv.page_source
         dt = pageDate(html)
@@ -37,7 +44,7 @@ class DoVisitArticles:
 
         # Reload the page to re-locate the missing picker
         if (len(items) < 2):
-            self.printPage(url)
+            self.printPage(url, True)
             return
 
         print("URL", self.drv.current_url)
