@@ -1,5 +1,6 @@
 ARTICLE_DATE_MARKER = "post-date-value"
 ARTICLE_PREFIX_DATE = "SPONSR_DATE "
+ARTICLE_PREFIX_NEXT = "SPONSR_NEXT "
 ARTICLE_PREFIX_SRC = "SPONSR_SRC "
 ARTICLE_PREFIX_URL = "SPONSR_URL "
 CSS_PICKER = "div[class^='datepicker--cells datepicker--cells-days']"

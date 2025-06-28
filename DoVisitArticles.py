@@ -54,11 +54,12 @@ class DoVisitArticles:
             self.printPage(url, True)
             return
 
-        self.print(ARTICLE_PREFIX_URL + self.drv.current_url)
-        self.print(ARTICLE_PREFIX_DATE + dt)
-        self.print(ARTICLE_PREFIX_SRC + html)
-
         # Use the second date picker, the reason is unclear.
         picker = items[1]
         cd = countedDays(picker)
         self.nextId = nextArticleId(cd, dt)
+
+        self.print(ARTICLE_PREFIX_URL + self.drv.current_url)
+        self.print(ARTICLE_PREFIX_DATE + dt)
+        self.print(ARTICLE_PREFIX_SRC + html)
+        self.print(ARTICLE_PREFIX_NEXT + str(self.nextId))
