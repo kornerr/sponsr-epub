@@ -8,9 +8,11 @@ from constants import *
 from other import *
 
 class DoVisitArticles:
-    def __init__(self):
+    def __init__(self, fileCache):
+        self.fileCache = fileCache
         self.drv = None
         self.nextId = None
+        self.out = []
 
     def execute(self):
         service = Service(
@@ -22,15 +24,20 @@ class DoVisitArticles:
         self.printPage(FIRST_POST, True)
         self.goToNextArticle()
         self.printPage(self.drv.current_url, False)
-        self.goToNextArticle()
-        self.printPage(self.drv.current_url, False)
-        self.goToNextArticle()
+#        self.goToNextArticle()
+#        self.printPage(self.drv.current_url, False)
+#        self.goToNextArticle()
+        writeFileLines(self.fileCache, self.out)
 
 
     def goToNextArticle(self):
         xpath = TEMPLATE_ARTICLE_XPATH.replace("%ARTICLE_ID%", str(self.nextId))
         cell = self.drv.find_element(By.XPATH, xpath)
         cell.click()
+
+    def print(self, s):
+        self.out.append(s)
+        print(s)
 
     def printPage(self, url, reload):
         # Reload the page
@@ -47,8 +54,9 @@ class DoVisitArticles:
             self.printPage(url, True)
             return
 
-        print("URL", self.drv.current_url)
-        print("DATE", dt)
+        self.print(ARTICLE_PREFIX_URL + self.drv.current_url)
+        self.print(ARTICLE_PREFIX_DATE + dt)
+        self.print(ARTICLE_PREFIX_SRC + html)
 
         # Use the second date picker, the reason is unclear.
         picker = items[1]

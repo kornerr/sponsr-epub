@@ -1,7 +1,8 @@
 from DoVisitArticles import *
+from constants import *
 
 tasks = [
-    DoVisitArticles(),
+    DoVisitArticles(FILE_CACHE_VISIT),
 ]
 
 for task in tasks:

@@ -75,3 +75,7 @@ def pageDate(html):
             isDate = True
     return None
 
+# Accept list of strings and save it
+def writeFileLines(fileName, lines):
+    with open(fileName, "w") as file:
+        file.write("\n".join(lines))
