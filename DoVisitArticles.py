@@ -22,11 +22,11 @@ class DoVisitArticles:
         self.drv = webdriver.Firefox(service = service)
 
         self.printPage(FIRST_POST, True)
-        self.goToNextArticle()
-        self.printPage(self.drv.current_url, False)
-#        self.goToNextArticle()
-#        self.printPage(self.drv.current_url, False)
-#        self.goToNextArticle()
+        limit = 33
+        for i in range(0, limit):
+            self.goToNextArticle()
+            self.printPage(self.drv.current_url, False)
+            time.sleep(2)
         writeFileLines(self.fileCache, self.out)
 
 
