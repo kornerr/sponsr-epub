@@ -1,0 +1,3 @@
+#!/bin/bash
+#/Users/mk/py3.12venv/bin/python3.12 -m pip install selenium
+/Users/mk/py3.12venv/bin/python3.12 run.py
