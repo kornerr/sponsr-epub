@@ -22,8 +22,7 @@ class DoVisitArticles:
         self.drv = webdriver.Firefox(service = service)
 
         self.printPage(FIRST_POST, True)
-        limit = 33
-        for i in range(0, limit):
+        for i in range(0, VISIT_LIMIT):
             self.goToNextArticle()
             self.printPage(self.drv.current_url, False)
             time.sleep(2)
