@@ -4,6 +4,7 @@ ARTICLE_PREFIX_NEXT = "SPONSR_NEXT "
 ARTICLE_PREFIX_SRC = "SPONSR_SRC "
 ARTICLE_PREFIX_URL = "SPONSR_URL "
 CSS_PICKER = "div[class^='datepicker--cells datepicker--cells-days']"
+FILE_CACHE_TOC = "/tmp/sponsr-toc"
 FILE_CACHE_VISIT = "/tmp/sponsr-visit"
 FIRST_POST = "https://sponsr.ru/marahovsky/?post_date=1585688400000"
 SELENIUM_DRIVER = "/Volumes/MOE/bin/geckodriver"
@@ -34,7 +35,6 @@ TEMPLATE_TOC_NAV_POINT = """
         <text>%POINT_TITLE%</text>
     </navLabel>
     <content src="%POINT_SRC%"/>
-    %SUBITEMS%
 </navPoint>
 """
 XPATH_NEXT_MONTH = "/html/body/div[1]/div[1]/div[6]/div[2]/div[3]/div/div/div/nav/div[3]"

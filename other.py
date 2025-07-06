@@ -75,6 +75,24 @@ def pageDate(html):
             isDate = True
     return None
 
+# Extract list of dates of articles
+def parseArticleDates(lines):
+    dts = []
+    for ln in lines:
+        lnt = ln.strip()
+        if lnt.startswith(ARTICLE_PREFIX_DATE):
+            prefixLen = len(ARTICLE_PREFIX_DATE)
+            dt = lnt[prefixLen:]
+            dts.append(dt)
+    return dts
+
+# Read file and return it as a list of strings
+def readFileLines(fileName):
+    lines = []
+    with open(fileName) as file:
+        lines = file.readlines()
+    return lines
+
 # Accept list of strings and save it
 def writeFileLines(fileName, lines):
     with open(fileName, "w") as file:

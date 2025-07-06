@@ -2,12 +2,16 @@ from constants import *
 from other import *
 
 class DoGenerateTOC:
-    def __init__(self, fileCache):
-        self.fileCache = fileCache
+    def __init__(self, fileCacheTOC, fileCacheVisit):
+        self.fileCacheTOC = fileCacheTOC
+        self.fileCacheVisit = fileCacheVisit
         self.out = []
 
     def execute(self):
-        self.print("TODO")
+        lines = readFileLines(self.fileCacheVisit)
+        dates = parseArticleDates(lines)
+        points = generateNavPoints()
+        self.print(points)
 
     def print(self, s):
         self.out.append(s)
