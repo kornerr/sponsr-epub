@@ -47,6 +47,18 @@ def detectNextMonth(ppm, currentMonth):
             takeIt = True
     return None
 
+def generateNavPoints(dates):
+    i = 0
+    items = ""
+    for dt in dates:
+        i += 1
+        item = TEMPLATE_TOC_NAV_POINT\
+            .replace("%ID%", dt)\
+            .replace("%ORDER%", str(i))\
+            .replace("%TITLE%", dt)
+        items += item
+    return items
+
 # Find next article id
 def nextArticleId(cd, currentDate):
     for id in cd:
@@ -74,6 +86,24 @@ def pageDate(html):
         if ARTICLE_DATE_MARKER in ln:
             isDate = True
     return None
+
+# Extract list of dates of articles
+def parseArticleDates(lines):
+    dts = []
+    for ln in lines:
+        lnt = ln.strip()
+        if lnt.startswith(ARTICLE_PREFIX_DATE):
+            prefixLen = len(ARTICLE_PREFIX_DATE)
+            dt = lnt[prefixLen:]
+            dts.append(dt)
+    return dts
+
+# Read file and return it as a list of strings
+def readFileLines(fileName):
+    lines = []
+    with open(fileName) as file:
+        lines = file.readlines()
+    return lines
 
 # Accept list of strings and save it
 def writeFileLines(fileName, lines):
