@@ -10,9 +10,11 @@ class DoGenerateTOC:
     def execute(self):
         lines = readFileLines(self.fileCacheVisit)
         dates = parseArticleDates(lines)
-        points = generateNavPoints()
-        self.print(points)
+        points = generateNavPoints(dates)
+        toc = TEMPLATE_TOC.replace("%TOC%", points)
+        self.print(toc)
+        writeFileLines(self.fileCacheTOC, self.out)
 
     def print(self, s):
         self.out.append(s)
-        print(s)
+        #print(s)

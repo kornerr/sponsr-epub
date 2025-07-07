@@ -47,6 +47,18 @@ def detectNextMonth(ppm, currentMonth):
             takeIt = True
     return None
 
+def generateNavPoints(dates):
+    i = 0
+    items = ""
+    for dt in dates:
+        i += 1
+        item = TEMPLATE_TOC_NAV_POINT\
+            .replace("%ID%", dt)\
+            .replace("%ORDER%", str(i))\
+            .replace("%TITLE%", dt)
+        items += item
+    return items
+
 # Find next article id
 def nextArticleId(cd, currentDate):
     for id in cd:
