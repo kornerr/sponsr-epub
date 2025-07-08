@@ -8,7 +8,8 @@ class DoGenerateContent:
 
     def execute(self):
         lines = readFileLines(self.fileCacheVisit)
-        self.print("TODO")
+        articles = parseArticles(lines)
+        self.print(articles)
 
     def print(self, s):
         self.out.append(s)

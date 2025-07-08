@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from constants import *
+import re
 
 # Returns calendar: Counter -> Date
 def countedDays(picker):
@@ -59,6 +60,13 @@ def generateNavPoints(dates):
         items += item
     return items
 
+def lineToDate(ln):
+    lnt = ln.strip()
+    parts = lnt.split(" ")
+    inverseDt = parts[0]
+    dps = inverseDt.split(".")
+    return f"{dps[2]}-{int(dps[1])}-{int(dps[0])}"
+
 # Find next article id
 def nextArticleId(cd, currentDate):
     for id in cd:
@@ -75,13 +83,7 @@ def pageDate(html):
     for ln in lines:
         # Parse date
         if isDate:
-            isDate = False
-            lnt = ln.strip()
-            parts = lnt.split(" ")
-            inverseDt = parts[0]
-            dps = inverseDt.split(".")
-            currentDate = f"{dps[2]}-{int(dps[1])}-{int(dps[0])}"
-            return currentDate
+            return lineToDate(ln)
         # Find date marker
         if ARTICLE_DATE_MARKER in ln:
             isDate = True
@@ -97,6 +99,30 @@ def parseArticleDates(lines):
             dt = lnt[prefixLen:]
             dts.append(dt)
     return dts
+
+# Extract dictonary of articles: "Date/Title" -> Text
+def parseArticles(lines):
+    d = {}
+    currentDate = None
+    isDate = False
+    isExpectingContents = False
+    isExpectingTitle = False
+    for ln in lines:
+        #lnt = ln.strip()
+        if isDate:
+            isDate = False
+            currentDate = lineToDate(ln)
+            print(currentDate)
+        if ARTICLE_DATE_MARKER in ln:
+            isDate = True
+        # Look for a title
+        # Example: <a href="/marahovsky/654/Tushenka_i_svoboda_laifhak_ot_geniya/">Тушёнка и свобода: лайфхак от гения</a>
+        rtitle = re.search("<a href=\"\/.*\/\d*\/.*>(.*)</a>", ln)
+        if rtitle:
+            currentTitle = rtitle.group(1)
+            print(currentTitle)
+
+    return d
 
 # Read file and return it as a list of strings
 def readFileLines(fileName):
