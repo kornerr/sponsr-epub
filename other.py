@@ -104,15 +104,16 @@ def parseArticleDates(lines):
 def parseArticles(lines):
     d = {}
     currentDate = None
+    currentTitle = None
     isDate = False
     isExpectingContents = False
-    isExpectingTitle = False
     for ln in lines:
-        #lnt = ln.strip()
+        # Date
         if isDate:
             isDate = False
             currentDate = lineToDate(ln)
-            print(currentDate)
+
+        # Title
         if ARTICLE_DATE_MARKER in ln:
             isDate = True
         # Look for a title
@@ -120,7 +121,27 @@ def parseArticles(lines):
         rtitle = re.search("<a href=\"\/.*\/\d*\/.*>(.*)</a>", ln)
         if rtitle:
             currentTitle = rtitle.group(1)
-            print(currentTitle)
+
+        # Contents
+        if (
+            isExpectingContents and
+            ARTICLE_TEXT_UNICODE_MARKER1 in ln
+        ):
+            text = ln.strip()\
+                .replace(ARTICLE_TEXT_UNICODE_MARKER1, "")\
+                .replace(ARTICLE_TEXT_UNICODE_MARKER2, "")\
+                .replace(ARTICLE_TEXT_PBRP, "")
+            # Add dictionary item
+            key = f"{currentDate}/{currentTitle}"
+            d[key] = text
+
+        if (
+            isExpectingContents and
+            ARTICLE_TEXT_END_MARKER in ln
+        ):
+            isExpectingContents = False
+        if ARTICLE_TEXT_START_MARKER in ln:
+            isExpectingContents = True
 
     return d
 
