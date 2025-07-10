@@ -48,17 +48,18 @@ def detectNextMonth(ppm, currentMonth):
             takeIt = True
     return None
 
-def generateNavPoints(dates):
+def generateNavPoints(datesTitles):
     i = 0
-    items = ""
-    for dt in dates:
+    out = ""
+    for item in datesTitles:
+        (dt, title) = item.split("/")
         i += 1
         item = TEMPLATE_TOC_NAV_POINT\
             .replace("%ID%", dt)\
             .replace("%ORDER%", str(i))\
-            .replace("%TITLE%", dt)
-        items += item
-    return items
+            .replace("%TITLE%", f"{dt}. {title}")
+        out += item
+    return out
 
 def lineToDate(ln):
     lnt = ln.strip()
@@ -89,16 +90,21 @@ def pageDate(html):
             isDate = True
     return None
 
-# Extract list of dates of articles
-def parseArticleDates(lines):
-    dts = []
+# Extract list of dates and titles of articles
+def parseArticleDatesAndTitles(lines):
+    items = []
+    currentDate = None
     for ln in lines:
         lnt = ln.strip()
         if lnt.startswith(ARTICLE_PREFIX_DATE):
             prefixLen = len(ARTICLE_PREFIX_DATE)
-            dt = lnt[prefixLen:]
-            dts.append(dt)
-    return dts
+            currentDate = lnt[prefixLen:]
+        if lnt.startswith(ARTICLE_PREFIX_TITLE):
+            prefixLen = len(ARTICLE_PREFIX_TITLE)
+            title = lnt[prefixLen:]
+            # Append
+            items.append(f"{currentDate}/{title}")
+    return items
 
 # Extract dictonary of articles: "Date/Title" -> Text
 def parseArticles(lines):
