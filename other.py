@@ -48,6 +48,23 @@ def detectNextMonth(ppm, currentMonth):
             takeIt = True
     return None
 
+def generateHTMLContent(datesTitles, contents):
+    i = 0
+    out = ""
+    for item in datesTitles:
+        (dt, title) = item.split("/")
+        txt = contents[i]
+        for exc in EXCLUDED:
+            txt = txt.replace(exc, "")
+        i += 1
+        item = TEMPLATE_HTML_CONTENT_ITEM\
+            .replace("%ID%", dt)\
+            .replace("%TITLE%", f"{dt}. {title}")\
+            .replace("%TXT%", txt)
+        out += item
+
+    return TEMPLATE_HTML_CONTENT.replace("%CONTENT%", out)
+
 def generateNavPoints(datesTitles):
     i = 0
     out = ""
@@ -89,6 +106,17 @@ def pageDate(html):
         if ARTICLE_DATE_MARKER in ln:
             isDate = True
     return None
+
+# Extract list of contents of articles
+def parseArticleContents(lines):
+    items = []
+    for ln in lines:
+        lnt = ln.strip()
+        if lnt.startswith(ARTICLE_PREFIX_CONTENT):
+            prefixLen = len(ARTICLE_PREFIX_CONTENT)
+            content = lnt[prefixLen:]
+            items.append(content)
+    return items
 
 # Extract list of dates and titles of articles
 def parseArticleDatesAndTitles(lines):
