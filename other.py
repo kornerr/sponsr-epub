@@ -48,6 +48,22 @@ def detectNextMonth(ppm, currentMonth):
             takeIt = True
     return None
 
+# Generate HTML for HTML, not EPUB
+def generateHTML(datesTitles, contents):
+    i = 0
+    out = ""
+    for item in datesTitles:
+        (dt, title) = item.split("/")
+        txt = contents[i]
+        i += 1
+        item = TEMPLATE_HTML_ITEM\
+            .replace("%ID%", dt)\
+            .replace("%TITLE%", f"{dt}. {title}")\
+            .replace("%TXT%", txt)
+        out += item
+    return TEMPLATE_HTML.replace("%CONTENT%", out)
+
+# Generate content.html for EPUB
 def generateHTMLContent(datesTitles, contents):
     i = 0
     out = ""
@@ -62,7 +78,6 @@ def generateHTMLContent(datesTitles, contents):
             .replace("%TITLE%", f"{dt}. {title}")\
             .replace("%TXT%", txt)
         out += item
-
     return TEMPLATE_HTML_CONTENT.replace("%CONTENT%", out)
 
 def generateNavPoints(datesTitles):

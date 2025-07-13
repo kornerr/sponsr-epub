@@ -36,6 +36,17 @@ FIRST_POST = "https://sponsr.ru/marahovsky/?post_date=1598907600000"
 SELENIUM_DRIVER = "/Volumes/MOE/bin/geckodriver"
 VISIT_LIMIT = 31
 TEMPLATE_ARTICLE_XPATH = "/html/body/div[1]/div[1]/div[6]/div[2]/div[3]/div/div/div/div/div/div[2]/div[%ARTICLE_ID%]"
+TEMPLATE_HTML = """<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    </head>
+	<body>
+%CONTENT%
+    </body>
+</html>
+"""
 TEMPLATE_HTML_CONTENT = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html
 	xmlns="http://www.w3.org/1999/xhtml"
@@ -53,6 +64,10 @@ TEMPLATE_HTML_CONTENT = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "ht
 """
 TEMPLATE_HTML_CONTENT_ITEM = """
 <h3 id="%ID%">%TITLE%</h3>
+%TXT%
+"""
+TEMPLATE_HTML_ITEM = """
+<h1 id="%ID%">%TITLE%</h1>
 %TXT%
 """
 TEMPLATE_TOC = """<?xml version="1.0" encoding="UTF-8"?>
