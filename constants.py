@@ -24,15 +24,15 @@ FILE_CACHE_VISIT = "/tmp/sponsr-visit"
 # 2020-5-1
 #FIRST_POST = "https://sponsr.ru/marahovsky/?post_date=1588280400000"
 # 2020-5-30
-#FIRST_POST = "https://sponsr.ru/marahovsky/?post_date=1590786000000"
+FIRST_POST = "https://sponsr.ru/marahovsky/?post_date=1590786000000"
 # 2020-6-1
-FIRST_POST = "https://sponsr.ru/marahovsky/?post_date=1590958800000"
+#FIRST_POST = "https://sponsr.ru/marahovsky/?post_date=1590958800000"
 # 2020-7-1
 #FIRST_POST = "https://sponsr.ru/marahovsky/?post_date=1593550800000"
 # 2020-8-1
 #FIRST_POST = "https://sponsr.ru/marahovsky/?post_date=1596229200000"
 # 2020-9-1
-FIRST_POST = "https://sponsr.ru/marahovsky/?post_date=1598907600000"
+#FIRST_POST = "https://sponsr.ru/marahovsky/?post_date=1598907600000"
 SELENIUM_DRIVER = "/Volumes/MOE/bin/geckodriver"
 VISIT_LIMIT = 31
 TEMPLATE_ARTICLE_XPATH = "/html/body/div[1]/div[1]/div[6]/div[2]/div[3]/div/div/div/div/div/div[2]/div[%ARTICLE_ID%]"

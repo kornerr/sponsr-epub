@@ -21,21 +21,36 @@ class DoVisitArticles:
         )
         self.drv = webdriver.Firefox(service = service)
 
-        self.printPage(FIRST_POST, True)
-        try:
-            for i in range(0, VISIT_LIMIT):
-                self.goToNextArticle()
-                self.printPage(self.drv.current_url, False)
-                time.sleep(3)
-        except Exception as err:
-            print(err)
+        self.nextId = self.printPage(FIRST_POST, True)
+        for i in range(0, VISIT_LIMIT):
+            ok = False
+            while not ok:
+                ok = self.goToNextArticleByDay()
+                if not ok:
+                    self.nextId = self.goToNextArticleByMonth()
+            self.nextId = self.printPage(self.drv.current_url, False)
+            time.sleep(3)
         writeFileLines(self.fileCache, self.out)
 
-
-    def goToNextArticle(self):
+    def goToNextArticleByDay(self):
         xpath = TEMPLATE_ARTICLE_XPATH.replace("%ARTICLE_ID%", str(self.nextId))
-        cell = self.drv.find_element(By.XPATH, xpath)
-        cell.click()
+        try:
+            cell = self.drv.find_element(By.XPATH, xpath)
+            cell.click()
+            return True
+        except Exception as err:
+            print(err)
+            return False
+
+    def goToNextArticleByMonth(self):
+        xpath = XPATH_NEXT_MONTH
+        try:
+            cell = self.drv.find_element(By.XPATH, xpath)
+            cell.click()
+            return 1
+        except Exception as err:
+            print(err)
+            return 0
 
     def print(self, s):
         self.out.append(s)
@@ -53,15 +68,14 @@ class DoVisitArticles:
 
         # Reload the page to re-locate the missing picker
         if (len(items) < 2):
-            self.printPage(url, True)
-            return
+            return self.printPage(url, True)
 
         # Use the second date picker, the reason is unclear.
         picker = items[1]
         cd = countedDays(picker)
-        self.nextId = nextArticleId(cd, dt)
 
         self.print(ARTICLE_PREFIX_URL + self.drv.current_url)
         self.print(ARTICLE_PREFIX_DATE + dt)
         self.print(ARTICLE_PREFIX_SRC + html)
-        self.print(ARTICLE_PREFIX_NEXT + str(self.nextId))
+
+        return nextArticleId(cd, dt)
