@@ -133,6 +133,13 @@ def parseArticleContents(lines):
             items.append(content)
     return items
 
+# Extract article date
+def parseArticleDate(html):
+    lines = html.split("\n")
+    for ln in lines:
+        print(ln)
+    return None
+
 # Extract list of dates and titles of articles
 def parseArticleDatesAndTitles(lines):
     items = []

@@ -14,17 +14,19 @@ CSS_PICKER = "div[class^='datepicker--cells datepicker--cells-days']"
 EXCLUDED = [
     """<img loading="lazy" src="/project/183/post/674/image/1113/imagesprojects183183kox8zi31j11bdbf9.webp?1585989070641">""",
 ]
+FILE_CACHE_COLLECT = "/tmp/sponsr-collect"
 FILE_CACHE_CONTENT = "/tmp/sponsr-content"
 FILE_CACHE_HTML = "/tmp/sponsr-html"
 FILE_CACHE_HTML_CONTENT = "/tmp/sponsr-html-content"
 FILE_CACHE_TOC = "/tmp/sponsr-toc"
 FILE_CACHE_VISIT = "/tmp/sponsr-visit"
-# 2020-4-1
-#FIRST_POST = "https://sponsr.ru/marahovsky/?post_date=1585688400000"
+# 2020-3-22
+#FIRST_POST = "https://sponsr.ru/marahovsky/588"
+FIRST_POST = "https://sponsr.ru/marahovsky/593"
 # 2020-5-1
 #FIRST_POST = "https://sponsr.ru/marahovsky/?post_date=1588280400000"
 # 2020-5-30
-FIRST_POST = "https://sponsr.ru/marahovsky/?post_date=1590786000000"
+#FIRST_POST = "https://sponsr.ru/marahovsky/?post_date=1590786000000"
 # 2020-6-1
 #FIRST_POST = "https://sponsr.ru/marahovsky/?post_date=1590958800000"
 # 2020-7-1
