@@ -30,7 +30,7 @@ class DoCollectArticles:
             self.drv.get(url)
         a = Article()
         html = self.drv.page_source
-        a.src = html
+        #a.src = html
         a.date = parseArticleDate(html)
 
         return a

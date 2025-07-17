@@ -137,7 +137,10 @@ def parseArticleContents(lines):
 def parseArticleDate(html):
     lines = html.split("\n")
     for ln in lines:
-        print(ln)
+        # Example: "post":{"id":593,"project_id":183,"level_id":334,"date":"2020-03-24T06:56:00.000Z"
+        rdt = re.search("\"post\":{\"id.*?\"date\":\"(.*?)\"", ln)
+        if rdt:
+            return rdt.group(1)
     return None
 
 # Extract list of dates and titles of articles
