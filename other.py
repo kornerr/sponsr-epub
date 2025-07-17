@@ -204,6 +204,15 @@ def parseArticles(lines):
 
     return d
 
+def parseArticleTitle(html):
+    lines = html.split("\n")
+    for ln in lines:
+        # Example: "post":{"id":593,"project_id":183,"level_id":334,"date":"2020-03-24T06:56:00.000Z","title":"Событие планетарного масштаба"
+        rt = re.search("\"post\":{\"id.*?\"title\":\"(.*?)\"", ln)
+        if rt:
+            return rt.group(1)
+    return None
+
 # Read file and return it as a list of strings
 def readFileLines(fileName):
     lines = []
