@@ -1,9 +1,4 @@
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.by import By
-from selenium.webdriver.firefox.service import Service
-from selenium import webdriver
 import time
-
 from constants import *
 from entities import *
 from other import *
@@ -15,26 +10,14 @@ class DoCollectArticles:
         self.out = []
 
     def execute(self):
-        service = Service(
-            executable_path = SELENIUM_DRIVER,
-            service_args = ["--marionette-port", "2828", "--connect-existing"]
-        )
-        self.drv = webdriver.Firefox(service = service)
+        html = webPageHTML(FIRST_POST)
 
-        a = self.loadPage(FIRST_POST, True)
-        self.print(a)
-
-    def loadPage(self, url, reload):
-        # Reload the page
-        if reload:
-            self.drv.get(url)
         a = Article()
-        html = self.drv.page_source
         #a.src = html
         a.date = parseArticleDate(html)
         a.title = parseArticleTitle(html)
 
-        return a
+        self.print(a)
 
     def print(self, s):
         self.out.append(s)

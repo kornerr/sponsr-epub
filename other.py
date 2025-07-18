@@ -1,4 +1,6 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.service import Service
+from selenium import webdriver
 from constants import *
 import re
 
@@ -224,3 +226,14 @@ def readFileLines(fileName):
 def writeFileLines(fileName, lines):
     with open(fileName, "w") as file:
         file.write("\n".join(lines))
+
+# Get page HTML by URL
+def webPageHTML(url):
+    service = Service(
+        executable_path = SELENIUM_DRIVER,
+        service_args = ["--marionette-port", "2828", "--connect-existing"]
+    )
+    drv = webdriver.Firefox(service = service)
+    drv.switch_to.new_window("tab")
+    drv.get(url)
+    return drv.page_source
