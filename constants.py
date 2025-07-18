@@ -6,10 +6,13 @@ ARTICLE_TEXT_UNICODE_MARKER2 = "\u200f"
 ARTICLE_DATE_MARKER = "post-date-value"
 ARTICLE_PREFIX_CONTENT = "SPONSR_CONTENT "
 ARTICLE_PREFIX_DATE = "SPONSR_DATE "
+ARTICLE_PREFIX_ID = "SPONSR_ID "
 ARTICLE_PREFIX_TITLE = "SPONSR_TITLE "
 ARTICLE_PREFIX_NEXT = "SPONSR_NEXT "
+ARTICLE_PREFIX_NEXT_ID = "SPONSR_NEXT_ID "
 ARTICLE_PREFIX_SRC = "SPONSR_SRC "
 ARTICLE_PREFIX_URL = "SPONSR_URL "
+BASE_URL = "https://sponsr.ru/marahovsky/"
 CSS_PICKER = "div[class^='datepicker--cells datepicker--cells-days']"
 EXCLUDED = [
     """<img loading="lazy" src="/project/183/post/674/image/1113/imagesprojects183183kox8zi31j11bdbf9.webp?1585989070641">""",
@@ -22,7 +25,7 @@ FILE_CACHE_TOC = "/tmp/sponsr-toc"
 FILE_CACHE_VISIT = "/tmp/sponsr-visit"
 # 2020-3-22
 #FIRST_POST = "https://sponsr.ru/marahovsky/588"
-FIRST_POST = "https://sponsr.ru/marahovsky/593"
+FIRST_POST = "593"
 # 2020-5-1
 #FIRST_POST = "https://sponsr.ru/marahovsky/?post_date=1588280400000"
 # 2020-5-30

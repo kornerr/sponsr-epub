@@ -161,6 +161,15 @@ def parseArticleDatesAndTitles(lines):
             items.append(f"{currentDate}/{title}")
     return items
 
+def parseArticleNextId(html):
+    lines = html.split("\n")
+    for ln in lines:
+        # Example: "nextPost":{"id":599,
+        r = re.search("\"nextPost\":{\"id\":(.*?),", ln)
+        if r:
+            return r.group(1)
+    return None
+
 # Extract dictonary of articles: "Date/Title" -> Text
 def parseArticles(lines):
     d = {}
