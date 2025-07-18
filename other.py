@@ -247,6 +247,14 @@ def parseArticleTitle(html):
             return rt.group(1)
     return None
 
+def parseLastNextId(lines):
+    id = None
+    for ln in lines:
+        if ln.startswith(ARTICLE_PREFIX_NEXT_ID):
+            prefixLen = len(ARTICLE_PREFIX_NEXT_ID)
+            id = ln[prefixLen:]
+    return id
+
 # Read file and return it as a list of strings
 def readFileLines(fileName):
     lines = []

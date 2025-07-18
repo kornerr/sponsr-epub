@@ -18,11 +18,14 @@ class DoCollectArticles:
 
         url = BASE_URL + FIRST_POST
         lines = readFileLines(self.fileCache)
-#        if not lines.isEmpty:
-#            url = 
+        # Remove excessive newlines
+        lines = list(map(lambda x: x.strip(), lines))
+        lastNextId = parseLastNextId(lines)
+        if lastNextId:
+            url = BASE_URL + lastNextId
+            print("ИГР starting from last next id:", url)
         counter = 0
         while counter < VISIT_LIMIT:
-            print("ИГР counter:", counter)
             a = self.loadArticle(url)
             self.print(str(a))
             url = BASE_URL + a.nextId
@@ -32,9 +35,7 @@ class DoCollectArticles:
         writeFileLines(self.fileCache, lines)
 
     def loadArticle(self, url):
-        print("01")
         html = webPageHTML(self.drv, url)
-        print("02")
         a = Article()
         a.date = parseArticleDate(html)
         a.id = parseArticleId(html)
