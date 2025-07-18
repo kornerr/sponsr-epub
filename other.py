@@ -250,9 +250,11 @@ def parseArticleTitle(html):
 # Read file and return it as a list of strings
 def readFileLines(fileName):
     lines = []
-    with open(fileName) as file:
-        lines = file.readlines()
-    return lines
+    try:
+        with open(fileName) as file:
+            lines = file.readlines()
+    finally:
+        return lines
 
 # Accept list of strings and save it
 def writeFileLines(fileName, lines):
@@ -260,12 +262,7 @@ def writeFileLines(fileName, lines):
         file.write("\n".join(lines))
 
 # Get page HTML by URL
-def webPageHTML(url):
-    service = Service(
-        executable_path = SELENIUM_DRIVER,
-        service_args = ["--marionette-port", "2828", "--connect-existing"]
-    )
-    drv = webdriver.Firefox(service = service)
+def webPageHTML(drv, url):
     drv.switch_to.new_window("tab")
     drv.get(url)
     return drv.page_source

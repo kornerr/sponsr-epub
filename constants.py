@@ -40,7 +40,7 @@ FIRST_POST = "593"
 # 2020-9-1
 #FIRST_POST = "https://sponsr.ru/marahovsky/?post_date=1598907600000"
 SELENIUM_DRIVER = "/Volumes/MOE/bin/geckodriver"
-VISIT_LIMIT = 31
+VISIT_LIMIT = 2
 TEMPLATE_ARTICLE_XPATH = "/html/body/div[1]/div[1]/div[6]/div[2]/div[3]/div/div/div/div/div/div[2]/div[%ARTICLE_ID%]"
 TEMPLATE_HTML = """<!DOCTYPE html>
 <html>
