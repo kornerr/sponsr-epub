@@ -161,6 +161,15 @@ def parseArticleDatesAndTitles(lines):
             items.append(f"{currentDate}/{title}")
     return items
 
+def parseArticleId(html):
+    lines = html.split("\n")
+    for ln in lines:
+        # Example: "post":{"id":593,
+        r = re.search("\"post\":{\"id\":(.*?),", ln)
+        if r:
+            return r.group(1)
+    return None
+
 def parseArticleNextId(html):
     lines = html.split("\n")
     for ln in lines:
@@ -214,6 +223,20 @@ def parseArticles(lines):
             isExpectingContents = True
 
     return d
+
+def parseArticleText(html):
+    lines = html.split("\n")
+    for ln in lines:
+        # Example: "text":{"post_id":593,"text":"......","titleSearch
+        r = re.search("\"text\":{\"post_id\":.*?,\"text\":\"(.*?)\",\"titleSearch", ln)
+        if r:
+            txt = r.group(1)
+            return txt\
+                .replace("\\u003c", "<")\
+                .replace("\\u003e", ">")\
+                .replace("\\\"", "\"")
+
+    return None
 
 def parseArticleTitle(html):
     lines = html.split("\n")

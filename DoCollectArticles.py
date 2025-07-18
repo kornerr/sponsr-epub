@@ -14,10 +14,11 @@ class DoCollectArticles:
         html = webPageHTML(url)
 
         a = Article()
-        #a.src = html
         a.date = parseArticleDate(html)
-        a.title = parseArticleTitle(html)
+        a.id = parseArticleId(html)
         a.nextId = parseArticleNextId(html)
+        a.text = parseArticleText(html)
+        a.title = parseArticleTitle(html)
 
         self.print(a)
 
