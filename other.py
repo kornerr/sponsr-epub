@@ -271,6 +271,5 @@ def writeFileLines(fileName, lines):
 
 # Get page HTML by URL
 def webPageHTML(drv, url):
-    drv.switch_to.new_window("tab")
     drv.get(url)
     return drv.page_source

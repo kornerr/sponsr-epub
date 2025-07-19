@@ -15,6 +15,7 @@ class DoCollectArticles:
             service_args = ["--marionette-port", "2828", "--connect-existing"]
         )
         self.drv = webdriver.Firefox(service = service)
+        self.drv.switch_to.new_window("tab")
 
         url = BASE_URL + FIRST_POST
         lines = readFileLines(self.fileCache)
