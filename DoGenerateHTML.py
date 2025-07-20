@@ -2,16 +2,15 @@ from constants import *
 from other import *
 
 class DoGenerateHTML:
-    def __init__(self, fileCacheContent, fileCacheHTML):
-        self.fileCacheContent = fileCacheContent
+    def __init__(self, fileCacheCollect, fileCacheHTML):
+        self.fileCacheCollect = fileCacheCollect
         self.fileCacheHTML = fileCacheHTML
         self.out = []
 
     def execute(self):
-        lines = readFileLines(self.fileCacheContent)
-        contents = parseArticleContents(lines)
-        datesTitles = parseArticleDatesAndTitles(lines)
-        html = generateHTML(datesTitles, contents)
+        lines = readFileLines(self.fileCacheCollect)
+        articles = parseCollectedArticles(lines)
+        html = generateHTML(articles)
         self.print(html)
         writeFileLines(self.fileCacheHTML, self.out)
 

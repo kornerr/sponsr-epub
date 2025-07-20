@@ -2,6 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.service import Service
 from selenium import webdriver
 from constants import *
+from entities import *
 import re
 
 # Returns calendar: Counter -> Date
@@ -50,18 +51,15 @@ def detectNextMonth(ppm, currentMonth):
             takeIt = True
     return None
 
-# Generate HTML for HTML, not EPUB
-def generateHTML(datesTitles, contents):
-    i = 0
+# Generate HTML from collected articles
+def generateHTML(articles):
     out = ""
-    for item in datesTitles:
-        (dt, title) = item.split("/")
-        txt = contents[i]
-        i += 1
+    for a in articles:
         item = TEMPLATE_HTML_ITEM\
-            .replace("%ID%", dt)\
-            .replace("%TITLE%", f"{dt}. {title}")\
-            .replace("%TXT%", txt)
+            .replace("%ID%", a.date)\
+            .replace("%TITLE%", f"{a.date}. {a.title}")\
+            .replace("%URL%", BASE_URL + a.id)\
+            .replace("%TXT%", a.text)
         out += item
     return TEMPLATE_HTML.replace("%CONTENT%", out)
 
@@ -246,6 +244,34 @@ def parseArticleTitle(html):
         if rt:
             return rt.group(1)
     return None
+
+def parseCollectedArticles(lines):
+    items = []
+    currentArticle = Article()
+
+    for ln in lines:
+        if ln.startswith(ARTICLE_PREFIX_DATE):
+            prefixLen = len(ARTICLE_PREFIX_DATE)
+            currentArticle.date = ln[prefixLen:]
+
+        elif ln.startswith(ARTICLE_PREFIX_TITLE):
+            prefixLen = len(ARTICLE_PREFIX_TITLE)
+            currentArticle.title = ln[prefixLen:]
+
+        elif ln.startswith(ARTICLE_PREFIX_ID):
+            prefixLen = len(ARTICLE_PREFIX_ID)
+            currentArticle.id = ln[prefixLen:]
+
+        elif ln.startswith(ARTICLE_PREFIX_NEXT_ID):
+            prefixLen = len(ARTICLE_PREFIX_NEXT_ID)
+            currentArticle.nextId = ln[prefixLen:]
+
+        elif ln.startswith(ARTICLE_PREFIX_TEXT):
+            prefixLen = len(ARTICLE_PREFIX_TEXT)
+            currentArticle.text = ln[prefixLen:]
+            items.append(currentArticle)
+            currentArticle = Article()
+    return items
 
 def parseLastNextId(lines):
     id = None

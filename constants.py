@@ -40,13 +40,18 @@ FIRST_POST = "593"
 # 2020-9-1
 #FIRST_POST = "https://sponsr.ru/marahovsky/?post_date=1598907600000"
 SELENIUM_DRIVER = "/Volumes/MOE/bin/geckodriver"
-VISIT_LIMIT = 30
+VISIT_LIMIT = 1
 TEMPLATE_ARTICLE_XPATH = "/html/body/div[1]/div[1]/div[6]/div[2]/div[3]/div/div/div/div/div/div[2]/div[%ARTICLE_ID%]"
 TEMPLATE_HTML = """<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <style>
+            h2 {
+	            page-break-before: always;
+            }
+        </style>
     </head>
 	<body>
 %CONTENT%
@@ -69,11 +74,11 @@ TEMPLATE_HTML_CONTENT = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "ht
 </html>
 """
 TEMPLATE_HTML_CONTENT_ITEM = """
-<h3 id="%ID%">%TITLE%</h3>
+<h2 id="%ID%">%TITLE%</h2>
 %TXT%
 """
 TEMPLATE_HTML_ITEM = """
-<h1 id="%ID%">%TITLE%</h1>
+<h2 id="%ID%"><a href="%URL%">%TITLE%</a></h2>
 %TXT%
 """
 TEMPLATE_TOC = """<?xml version="1.0" encoding="UTF-8"?>
