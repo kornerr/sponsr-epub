@@ -47,11 +47,6 @@ TEMPLATE_HTML = """<!DOCTYPE html>
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <style>
-            h2 {
-	            page-break-before: always;
-            }
-        </style>
     </head>
 	<body>
 %CONTENT%
@@ -77,6 +72,7 @@ TEMPLATE_HTML_CONTENT_ITEM = """
 <h2 id="%ID%">%TITLE%</h2>
 %TXT%
 """
+TEMPLATE_HTML_FILE = "/tmp/sponsr.marahovsky-%YEAR%.html"
 TEMPLATE_HTML_ITEM = """
 <h2 id="%ID%"><a href="%URL%">%TITLE%</a></h2>
 %TXT%

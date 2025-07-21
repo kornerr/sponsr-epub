@@ -8,7 +8,7 @@ from constants import *
 
 tasks = [
 #    DoCollectArticles(FILE_CACHE_COLLECT),
-    DoGenerateHTML(FILE_CACHE_COLLECT, FILE_CACHE_HTML),
+    DoGenerateHTML(FILE_CACHE_COLLECT),
 #    DoVisitArticles(FILE_CACHE_VISIT),
 #    DoExtractContent(FILE_CACHE_CONTENT, FILE_CACHE_VISIT),
 #    DoGenerateTOC(FILE_CACHE_CONTENT, FILE_CACHE_TOC),

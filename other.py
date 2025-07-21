@@ -5,6 +5,16 @@ from constants import *
 from entities import *
 import re
 
+# Return articles segmented by year: year -> [articles]
+def articlesByYear(articles):
+    d = {}
+    for a in articles:
+        year = a.date.split("-")[0]
+        if year not in d:
+            d[year] = []
+        d[year].append(a)
+    return d
+
 # Returns calendar: Counter -> Date
 def countedDays(picker):
     out = {}
