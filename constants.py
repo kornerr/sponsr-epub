@@ -77,6 +77,7 @@ TEMPLATE_HTML_ITEM = """
 <h2 id="%ID%"><a href="%URL%">%DATE%</a> %TITLE%</h2>
 %TXT%
 """
+TEMPLATE_SINGLE_HTML_FILE = "/tmp/sponsr.marahovsky-%DATE%.html"
 TEMPLATE_TOC = """<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
 <ncx
