@@ -74,7 +74,7 @@ TEMPLATE_HTML_CONTENT_ITEM = """
 """
 TEMPLATE_HTML_FILE = "/tmp/sponsr.marahovsky-%YEAR%.html"
 TEMPLATE_HTML_ITEM = """
-<h2 id="%ID%"><a href="%URL%">%TITLE%</a></h2>
+<h2 id="%ID%"><a href="%URL%">%DATE%</a> %TITLE%</h2>
 %TXT%
 """
 TEMPLATE_TOC = """<?xml version="1.0" encoding="UTF-8"?>

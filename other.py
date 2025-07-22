@@ -65,9 +65,11 @@ def detectNextMonth(ppm, currentMonth):
 def generateHTML(articles):
     out = ""
     for a in articles:
+        dt = a.date.split("T")[0]
         item = TEMPLATE_HTML_ITEM\
             .replace("%ID%", a.date)\
-            .replace("%TITLE%", f"{a.date}. {a.title}")\
+            .replace("%DATE%", dt)\
+            .replace("%TITLE%", a.title)\
             .replace("%URL%", BASE_URL + a.id)\
             .replace("%TXT%", a.text)
         out += item
@@ -260,25 +262,26 @@ def parseCollectedArticles(lines):
     currentArticle = Article()
 
     for ln in lines:
-        if ln.startswith(ARTICLE_PREFIX_DATE):
+        lnt = ln.strip()
+        if lnt.startswith(ARTICLE_PREFIX_DATE):
             prefixLen = len(ARTICLE_PREFIX_DATE)
-            currentArticle.date = ln[prefixLen:]
+            currentArticle.date = lnt[prefixLen:]
 
-        elif ln.startswith(ARTICLE_PREFIX_TITLE):
+        elif lnt.startswith(ARTICLE_PREFIX_TITLE):
             prefixLen = len(ARTICLE_PREFIX_TITLE)
-            currentArticle.title = ln[prefixLen:]
+            currentArticle.title = lnt[prefixLen:]
 
-        elif ln.startswith(ARTICLE_PREFIX_ID):
+        elif lnt.startswith(ARTICLE_PREFIX_ID):
             prefixLen = len(ARTICLE_PREFIX_ID)
-            currentArticle.id = ln[prefixLen:]
+            currentArticle.id = lnt[prefixLen:]
 
-        elif ln.startswith(ARTICLE_PREFIX_NEXT_ID):
+        elif lnt.startswith(ARTICLE_PREFIX_NEXT_ID):
             prefixLen = len(ARTICLE_PREFIX_NEXT_ID)
-            currentArticle.nextId = ln[prefixLen:]
+            currentArticle.nextId = lnt[prefixLen:]
 
-        elif ln.startswith(ARTICLE_PREFIX_TEXT):
+        elif lnt.startswith(ARTICLE_PREFIX_TEXT):
             prefixLen = len(ARTICLE_PREFIX_TEXT)
-            currentArticle.text = ln[prefixLen:]
+            currentArticle.text = lnt[prefixLen:]
             items.append(currentArticle)
             currentArticle = Article()
     return items
