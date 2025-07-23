@@ -1,6 +1,19 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.service import Service
+from selenium import webdriver
 from constants import *
+from entities import *
 import re
+
+# Return articles segmented by year: year -> [articles]
+def articlesByYear(articles):
+    d = {}
+    for a in articles:
+        year = a.date.split("-")[0]
+        if year not in d:
+            d[year] = []
+        d[year].append(a)
+    return d
 
 # Returns calendar: Counter -> Date
 def countedDays(picker):
@@ -48,18 +61,17 @@ def detectNextMonth(ppm, currentMonth):
             takeIt = True
     return None
 
-# Generate HTML for HTML, not EPUB
-def generateHTML(datesTitles, contents):
-    i = 0
+# Generate HTML from collected articles
+def generateHTML(articles):
     out = ""
-    for item in datesTitles:
-        (dt, title) = item.split("/")
-        txt = contents[i]
-        i += 1
+    for a in articles:
+        dt = a.date.split("T")[0]
         item = TEMPLATE_HTML_ITEM\
-            .replace("%ID%", dt)\
-            .replace("%TITLE%", f"{dt}. {title}")\
-            .replace("%TXT%", txt)
+            .replace("%ID%", a.date)\
+            .replace("%DATE%", dt)\
+            .replace("%TITLE%", a.title)\
+            .replace("%URL%", BASE_URL + a.id)\
+            .replace("%TXT%", a.text)
         out += item
     return TEMPLATE_HTML.replace("%CONTENT%", out)
 
@@ -133,6 +145,16 @@ def parseArticleContents(lines):
             items.append(content)
     return items
 
+# Extract article date
+def parseArticleDate(html):
+    lines = html.split("\n")
+    for ln in lines:
+        # Example: "post":{"id":593,"project_id":183,"level_id":334,"date":"2020-03-24T06:56:00.000Z"
+        rdt = re.search("\"post\":{\"id.*?\"date\":\"(.*?)\"", ln)
+        if rdt:
+            return rdt.group(1)
+    return None
+
 # Extract list of dates and titles of articles
 def parseArticleDatesAndTitles(lines):
     items = []
@@ -148,6 +170,24 @@ def parseArticleDatesAndTitles(lines):
             # Append
             items.append(f"{currentDate}/{title}")
     return items
+
+def parseArticleId(html):
+    lines = html.split("\n")
+    for ln in lines:
+        # Example: "post":{"id":593,
+        r = re.search("\"post\":{\"id\":(.*?),", ln)
+        if r:
+            return r.group(1)
+    return None
+
+def parseArticleNextId(html):
+    lines = html.split("\n")
+    for ln in lines:
+        # Example: "nextPost":{"id":599,
+        r = re.search("\"nextPost\":{\"id\":(.*?),", ln)
+        if r:
+            return r.group(1)
+    return None
 
 # Extract dictonary of articles: "Date/Title" -> Text
 def parseArticles(lines):
@@ -194,14 +234,81 @@ def parseArticles(lines):
 
     return d
 
+def parseArticleText(html):
+    lines = html.split("\n")
+    for ln in lines:
+        # Example: "text":{"post_id":593,"text":"......","titleSearch
+        r = re.search("\"text\":{\"post_id\":.*?,\"text\":\"(.*?)\",\"titleSearch", ln)
+        if r:
+            txt = r.group(1)
+            return txt\
+                .replace("\\u003c", "<")\
+                .replace("\\u003e", ">")\
+                .replace("\\\"", "\"")
+
+    return None
+
+def parseArticleTitle(html):
+    lines = html.split("\n")
+    for ln in lines:
+        # Example: "post":{"id":593,"project_id":183,"level_id":334,"date":"2020-03-24T06:56:00.000Z","title":"Событие планетарного масштаба"
+        rt = re.search("\"post\":{\"id.*?\"title\":\"(.*?)\"", ln)
+        if rt:
+            return rt.group(1)
+    return None
+
+def parseCollectedArticles(lines):
+    items = []
+    currentArticle = Article()
+
+    for ln in lines:
+        lnt = ln.strip()
+        if lnt.startswith(ARTICLE_PREFIX_DATE):
+            prefixLen = len(ARTICLE_PREFIX_DATE)
+            currentArticle.date = lnt[prefixLen:]
+
+        elif lnt.startswith(ARTICLE_PREFIX_TITLE):
+            prefixLen = len(ARTICLE_PREFIX_TITLE)
+            currentArticle.title = lnt[prefixLen:]
+
+        elif lnt.startswith(ARTICLE_PREFIX_ID):
+            prefixLen = len(ARTICLE_PREFIX_ID)
+            currentArticle.id = lnt[prefixLen:]
+
+        elif lnt.startswith(ARTICLE_PREFIX_NEXT_ID):
+            prefixLen = len(ARTICLE_PREFIX_NEXT_ID)
+            currentArticle.nextId = lnt[prefixLen:]
+
+        elif lnt.startswith(ARTICLE_PREFIX_TEXT):
+            prefixLen = len(ARTICLE_PREFIX_TEXT)
+            currentArticle.text = lnt[prefixLen:]
+            items.append(currentArticle)
+            currentArticle = Article()
+    return items
+
+def parseLastNextId(lines):
+    id = None
+    for ln in lines:
+        if ln.startswith(ARTICLE_PREFIX_NEXT_ID):
+            prefixLen = len(ARTICLE_PREFIX_NEXT_ID)
+            id = ln[prefixLen:]
+    return id
+
 # Read file and return it as a list of strings
 def readFileLines(fileName):
     lines = []
-    with open(fileName) as file:
-        lines = file.readlines()
-    return lines
+    try:
+        with open(fileName) as file:
+            lines = file.readlines()
+    finally:
+        return lines
 
 # Accept list of strings and save it
 def writeFileLines(fileName, lines):
     with open(fileName, "w") as file:
         file.write("\n".join(lines))
+
+# Get page HTML by URL
+def webPageHTML(drv, url):
+    drv.get(url)
+    return drv.page_source
